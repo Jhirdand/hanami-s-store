@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gestión de marcas</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .card {
+      margin-bottom: 20px;
+    }
+
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Gestión de marcas</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#brandModal">Agregar Marca</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <img class="card-img-top" src="https://dummyimage.com/300x200/000/fff" alt="Imagen de la Marca 1">
+          <div class="card-body">
+            <h5 class="card-title">Marca 1</h5>
+            <p class="card-text">Descripción de la marca 1.</p>
+            <button class="btn btn-primary btn-sm" onclick="editCard(this)">Editar</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCard(this)">Eliminar</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <img class="card-img-top" src="https://dummyimage.com/300x200/000/fff" alt="Imagen de la Marca 2">
+          <div class="card-body">
+            <h5 class="card-title">Marca 2</h5>
+            <p class="card-text">Descripción de la marca 2.</p>
+            <button class="btn btn-primary btn-sm" onclick="editCard(this)">Editar</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCard(this)">Eliminar</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <img class="card-img-top" src="https://dummyimage.com/300x200/000/fff" alt="Imagen de la Marca 3">
+          <div class="card-body">
+            <h5 class="card-title">Marca 3</h5>
+            <p class="card-text">Descripción de la marca 3.</p>
+            <button class="btn btn-primary btn-sm" onclick="editCard(this)">Editar</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCard(this)">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para agregar o editar una marca -->
+  <div class="modal fade" id="brandModal" tabindex="-1" role="dialog" aria-labelledby="brandModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="brandModalLabel">Agregar Marca</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="brandName">Nombre de la Marca</label>
+              <input type="text" class="form-control" id="brandName">
+            </div>
+            <div class="form-group">
+              <label for="brandDescription">Descripción</label>
+              <textarea class="form-control" id="brandDescription" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="brandImage">Imagen</label>
+              <input type="text" class="form-control" id="brandImage" placeholder="URL de la imagen">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="saveBrand()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    function editCard(button) {
+      var card = button.closest('.card');
+      var title = card.querySelector('.card-title').textContent;
+      var description = card.querySelector('.card-text').textContent;
+      var image = card.querySelector('.card-img-top').src;
+
+      var brandNameInput = document.getElementById('brandName');
+      var brandDescriptionInput = document.getElementById('brandDescription');
+      var brandImageInput = document.getElementById('brandImage');
+
+      brandNameInput.value = title;
+      brandDescriptionInput.value = description;
+      brandImageInput.value = image;
+
+      $('#brandModal').modal('show');
+    }
+
+    function deleteCard(button) {
+      var card = button.closest('.card');
+      card.remove();
+    }
+
+    function saveBrand() {
+      var brandNameInput = document.getElementById('brandName');
+      var brandDescriptionInput = document.getElementById('brandDescription');
+      var brandImageInput = document.getElementById('brandImage');
+
+      var brandName = brandNameInput.value;
+      var brandDescription = brandDescriptionInput.value;
+      var brandImage = brandImageInput.value;
+
+      var cardTemplate = `
+        <div class="col-md-4">
+          <div class="card">
+            <img class="card-img-top" src="${brandImage}" alt="Imagen de ${brandName}">
+            <div class="card-body">
+              <h5 class="card-title">${brandName}</h5>
+              <p class="card-text">${brandDescription}</p>
+              <button class="btn btn-primary btn-sm" onclick="editCard(this)">Editar</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteCard(this)">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      var row = document.querySelector('.row');
+      row.insertAdjacentHTML('beforeend', cardTemplate);
+
+      $('#brandModal').modal('hide');
+      brandNameInput.value = '';
+      brandDescriptionInput.value = '';
+      brandImageInput.value = '';
+    }
+  </script>
+</body>
+</html>
